@@ -19,6 +19,9 @@ export async function GET() {
     blobServiceClient.getContainerClient(CONTAINER_THUMBNAILS);
 
   // List all originals
+  await originalsContainer.createIfNotExists({ access: "blob" });
+  await thumbsContainer.createIfNotExists({ access: "blob" });
+
   const originals: string[] = [];
   for await (const blob of originalsContainer.listBlobsFlat()) {
     originals.push(blob.name);

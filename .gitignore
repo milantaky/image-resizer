@@ -5,3 +5,7 @@ dist/
 local.settings.json
 *.zip
 .DS_Store
+__azurite_db_*.json
+__blobstorage__/
+__queuestorage__/
+AzuriteConfig
