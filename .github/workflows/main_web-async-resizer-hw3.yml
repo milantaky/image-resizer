@@ -55,5 +55,4 @@ jobs:
           app-name: "web-async-resizer-hw3"
           slot-name: "Production"
           package: .
-          startup-command: "node_modules/.bin/next start"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
