@@ -1,0 +1,7 @@
+node_modules/
+.next/
+dist/
+.env.local
+local.settings.json
+*.zip
+.DS_Store

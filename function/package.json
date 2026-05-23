@@ -1,0 +1,21 @@
+{
+  "name": "image-resizer-function",
+  "version": "1.0.0",
+  "description": "Azure Function - queue-triggered image resizer",
+  "main": "dist/src/functions/resizeImage.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "func start",
+    "prestart": "npm run build"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.5.0",
+    "@azure/storage-blob": "^12.24.0",
+    "sharp": "^0.33.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}
