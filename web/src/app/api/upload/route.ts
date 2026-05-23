@@ -3,8 +3,11 @@ import { BlobServiceClient } from "@azure/storage-blob";
 import { QueueServiceClient } from "@azure/storage-queue";
 import { randomUUID } from "crypto";
 
+export const dynamic = "force-dynamic";
+
 const CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING!;
-const CONTAINER_ORIGINALS = process.env.AZURE_BLOB_CONTAINER_ORIGINALS ?? "originals";
+const CONTAINER_ORIGINALS =
+  process.env.AZURE_BLOB_CONTAINER_ORIGINALS ?? "originals";
 const QUEUE_NAME = process.env.AZURE_QUEUE_NAME ?? "resize-jobs";
 
 export async function POST(req: NextRequest) {
@@ -17,19 +20,27 @@ export async function POST(req: NextRequest) {
 
   const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
   if (!allowedTypes.includes(file.type)) {
-    return NextResponse.json({ error: "Only JPEG, PNG and WebP are supported" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Only JPEG, PNG and WebP are supported" },
+      { status: 400 },
+    );
   }
 
   if (file.size > 10 * 1024 * 1024) {
-    return NextResponse.json({ error: "File too large (max 10 MB)" }, { status: 400 });
+    return NextResponse.json(
+      { error: "File too large (max 10 MB)" },
+      { status: 400 },
+    );
   }
 
   const ext = file.name.split(".").pop() ?? "jpg";
   const blobName = `${randomUUID()}.${ext}`;
 
   // 1. Upload original to Blob Storage
-  const blobServiceClient = BlobServiceClient.fromConnectionString(CONNECTION_STRING);
-  const containerClient = blobServiceClient.getContainerClient(CONTAINER_ORIGINALS);
+  const blobServiceClient =
+    BlobServiceClient.fromConnectionString(CONNECTION_STRING);
+  const containerClient =
+    blobServiceClient.getContainerClient(CONTAINER_ORIGINALS);
   await containerClient.createIfNotExists({ access: "blob" });
 
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
@@ -39,7 +50,8 @@ export async function POST(req: NextRequest) {
   });
 
   // 2. Enqueue resize job message
-  const queueServiceClient = QueueServiceClient.fromConnectionString(CONNECTION_STRING);
+  const queueServiceClient =
+    QueueServiceClient.fromConnectionString(CONNECTION_STRING);
   const queueClient = queueServiceClient.getQueueClient(QUEUE_NAME);
   await queueClient.createIfNotExists();
 

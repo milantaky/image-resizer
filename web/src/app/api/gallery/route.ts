@@ -1,15 +1,22 @@
 import { NextResponse } from "next/server";
 import { BlobServiceClient } from "@azure/storage-blob";
 
+export const dynamic = "force-dynamic";
+
 const CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING!;
-const CONTAINER_ORIGINALS = process.env.AZURE_BLOB_CONTAINER_ORIGINALS ?? "originals";
-const CONTAINER_THUMBNAILS = process.env.AZURE_BLOB_CONTAINER_THUMBNAILS ?? "thumbnails";
+const CONTAINER_ORIGINALS =
+  process.env.AZURE_BLOB_CONTAINER_ORIGINALS ?? "originals";
+const CONTAINER_THUMBNAILS =
+  process.env.AZURE_BLOB_CONTAINER_THUMBNAILS ?? "thumbnails";
 
 export async function GET() {
-  const blobServiceClient = BlobServiceClient.fromConnectionString(CONNECTION_STRING);
+  const blobServiceClient =
+    BlobServiceClient.fromConnectionString(CONNECTION_STRING);
 
-  const originalsContainer = blobServiceClient.getContainerClient(CONTAINER_ORIGINALS);
-  const thumbsContainer = blobServiceClient.getContainerClient(CONTAINER_THUMBNAILS);
+  const originalsContainer =
+    blobServiceClient.getContainerClient(CONTAINER_ORIGINALS);
+  const thumbsContainer =
+    blobServiceClient.getContainerClient(CONTAINER_THUMBNAILS);
 
   // List all originals
   const originals: string[] = [];
