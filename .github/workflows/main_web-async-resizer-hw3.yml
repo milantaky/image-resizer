@@ -29,16 +29,10 @@ jobs:
           npm install
           npm run build --if-present
 
-      - name: Check build output
-        run: |
-          cd web
-          ls -la
-          ls -la .next/
-
       - name: Zip artifact
         run: |
           cd web
-          zip -r ../node-app.zip . -x "*.git*"
+          zip -r ../node-app.zip . -x "*.git*" -x "node_modules/*"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
